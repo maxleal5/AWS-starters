@@ -1,0 +1,16 @@
+{
+  "Grants": [
+    {
+      "Grantee": {
+        "DisplayName": "_max2",
+        "ID": "aaa7ba1f60fddd9e37b5c947b60f411978d07a120e80d430549863a9e019a623",
+        "Type": "CanonicalUser"
+      },
+      "Permission": "FULL_CONTROL"
+    }
+  ],
+  "Owner": {
+    "DisplayName": "maxleal5",
+    "ID": "22b95e7939767e50e6d5565a5c0cd290d831f7f82a992a8019eed7b0c19a470d"
+  }
+}
