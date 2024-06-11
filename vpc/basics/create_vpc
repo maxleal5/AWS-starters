@@ -3,6 +3,12 @@
 # create our vpc
 VPC_ID=$(aws ec2 create-vpc --cidr-block "172.1.0.0/16" --region us-east-2 --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=my-vpc-3}]' --query Vpc.VpcId --output text)
 echo $VPC_ID
+
+# Turn on DNS hostnames
+aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames "{\"Value\":true}"
+
+
+
 # create an IGW
 IGW_ID=$(aws ec2 create-internet-gateway --query InternetGateway.InternetGatewayId --output text)
 echo "IGW_ID: $IGW_ID"
@@ -13,6 +19,9 @@ aws ec2 attach-internet-gateway --internet-gateway-id $IGW_ID --vpc-id $VPC_ID
 SUBNET_ID=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 172.1.0.0/20 --query Subnet.SubnetId --output text)
 
 echo "SUBNET_ID: $SUBNET_ID"
+
+# auto assing IPv4 addresss
+aws ec2 modify-subnet-attribute --subnet-id $SUBNET_ID --map-public-ip-on-launch
 
 
 # explicitly associate subnet
@@ -25,3 +34,7 @@ aws ec2 associate-route-table \
 
  
 # add a route for our RT to our IGW
+aws ec2 create-route --route-table-id $RT_ID --destination-cidr-block 0.0.0.0/0 --gateway-id $IGW_ID
+
+# print out delete command
+echo "./delete_vpc $VPC_ID $IGW_ID $SUBNET_ID $RT_ID"
